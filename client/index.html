@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#1d6fe0" />
+    <title>SIS | Student Information System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='130' fill='%231d6fe0'/%3E%3Cpath d='M418 124C386 61 324 34 258 39C179 45 124 104 118 177C113 224 130 257 161 294L214 356C228 373 250 372 263 357C276 343 272 324 260 310L211 252C184 220 174 191 184 158C198 111 241 84 291 83C343 81 387 96 418 124Z' fill='white'/%3E%3Cpath d='M94 387C126 442 188 469 253 465C330 460 386 404 394 331C399 284 382 251 351 214L298 151C284 134 262 135 249 150C236 164 240 183 252 197L301 256C328 288 338 317 328 350C314 397 271 424 221 425C169 427 125 412 94 387Z' fill='white'/%3E%3C/svg%3E"
+    />
+    <script>
+      // Apply the saved theme before first paint to avoid a flash of the wrong theme.
+      try {
+        if (localStorage.getItem('sis-theme') === 'dark') {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        }
+      } catch (error) {
+        /* storage unavailable: fall back to light theme */
+      }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
