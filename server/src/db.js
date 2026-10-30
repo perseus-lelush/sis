@@ -2,7 +2,6 @@ import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import mysql from 'mysql2/promise';
-import { createDB } from 'mysql-memory-server';
 import { config } from './config.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -16,6 +15,9 @@ export async function initDb() {
   let connectionOptions;
 
   if (config.dbMode === 'embedded') {
+    // Loaded lazily so the embedded MySQL tooling is never pulled into a
+    // serverless bundle when DB_MODE=external (e.g. on Vercel).
+    const { createDB } = await import('mysql-memory-server');
     embeddedServer = await createDB({
       version: process.env.MYSQL_VERSION || '8.4.x',
       dbName: config.db.name,

@@ -5,6 +5,7 @@
   "type": "module",
   "main": "src/index.js",
   "scripts": {
+    "build": "echo '[server] no build step (deploys as-is on serverless)'",
     "dev": "node --watch src/index.js",
     "start": "node src/index.js",
     "db:init": "node src/scripts/init-db.js",
