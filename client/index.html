@@ -25,6 +25,26 @@
         /* storage unavailable: fall back to light theme */
       }
     </script>
+    <script>
+      // Desktop-only gate: mark unsupported devices (Android/phone/tablet UAs,
+      // touch-only screens, viewports under 1024px) before first paint so the
+      // application markup never flashes inside #root on a small device.
+      // DeviceGate.jsx renders the full-screen notice and clears the
+      // attribute when a desktop window re-qualifies after a resize.
+      try {
+        var slim = /android|iphone|ipod|ipad|iemobile|windows phone|opera mini|opera mobi|blackberry|bb10|webos|kindle|silk|fxios|\bmobi\b|\btablet\b|playbook|titan|nexus [5-9]/i.test(
+          navigator.userAgent,
+        );
+        var touchOnly =
+          window.matchMedia &&
+          window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+        if (slim || touchOnly || window.innerWidth < 1024) {
+          document.documentElement.setAttribute('data-device-blocked', 'true');
+        }
+      } catch (error) {
+        /* never block rendering because of a scripting failure */
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>

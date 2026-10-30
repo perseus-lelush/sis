@@ -14,6 +14,7 @@ import {
   statusTone,
   timeAgo,
 } from '../client/src/lib/api.js';
+import { MIN_DESKTOP_WIDTH, inspectDevice } from '../client/src/lib/device.js';
 
 test('parseId accepts positive integers and rejects everything else', () => {
   assert.equal(parseId(7), 7);
@@ -101,4 +102,36 @@ test('timeAgo describes recent timestamps', () => {
   assert.equal(timeAgo(stamp(5 * 60 * 1000)), '5m ago');
   assert.equal(timeAgo(stamp(3 * 60 * 60 * 1000)), '3h ago');
   assert.equal(timeAgo(stamp(2 * 24 * 60 * 60 * 1000)), '2d ago');
+});
+
+test('device gate blocks phone, tablet and touch-only browsers regardless of window size', () => {
+  const desktop = { width: 1440, userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/126 Safari/537.36', touchOnly: false };
+  assert.deepEqual(inspectDevice(desktop), { blocked: false, reasons: [] });
+
+  const androidPhone = { ...desktop, userAgent: 'Mozilla/5.0 (Linux; Android 14; SM-A546E) Chrome/126 Mobile Safari/537.36' };
+  assert.deepEqual(inspectDevice(androidPhone), { blocked: true, reasons: ['device'] });
+
+  const androidTablet = { ...desktop, userAgent: 'Mozilla/5.0 (Linux; Android 13; SM-T970) Tablet Chrome/126 Safari/537.36' };
+  assert.deepEqual(inspectDevice(androidTablet), { blocked: true, reasons: ['device'] });
+
+  // iPads without the "Request Desktop Site" swap show an iPad UA; touch-only
+  // hardware is caught even when it claims to be a Macintosh desktop.
+  assert.equal(inspectDevice({ ...desktop, userAgent: 'Mozilla/5.0 (iPad) Safari/17' }).blocked, true);
+  assert.deepEqual(inspectDevice({ ...desktop, touchOnly: true }), { blocked: true, reasons: ['touch'] });
+});
+
+test('device gate enforces the desktop viewport minimum and reports every reason', () => {
+  const win = { width: 1440, userAgent: 'Mozilla/5.0 (Windows NT 10.0) Chrome/126', touchOnly: false };
+
+  assert.equal(inspectDevice({ ...win, width: MIN_DESKTOP_WIDTH }).blocked, false);
+  assert.deepEqual(inspectDevice({ ...win, width: MIN_DESKTOP_WIDTH - 1 }), {
+    blocked: true,
+    reasons: ['viewport'],
+  });
+
+  const everyReason = inspectDevice({ width: 412, userAgent: 'Mozilla/5.0 (Linux; Android 14) Mobile', touchOnly: true });
+  assert.deepEqual(everyReason, { blocked: true, reasons: ['device', 'touch', 'viewport'] });
+
+  // Missing or malformed inputs never silently allow access.
+  assert.deepEqual(inspectDevice({}), { blocked: true, reasons: ['unknown'] });
 });

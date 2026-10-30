@@ -4685,3 +4685,74 @@ html[data-theme='dark'] body {
     grid-template-columns: 1fr;
   }
 }
+
+/* Desktop-only device gate (DeviceGate.jsx) */
+html[data-device-blocked] #root > :not(.device-gate) {
+  display: none !important;
+}
+
+.device-gate {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 32px;
+  background: var(--bg);
+}
+
+.device-gate__card {
+  width: min(500px, 100%);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  padding: 42px 38px;
+  text-align: center;
+  box-shadow: 0 24px 60px rgba(11, 37, 69, 0.16);
+}
+
+.device-gate__logo {
+  width: 64px;
+  height: 64px;
+  border-radius: 18px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, #1d6fe0, #1456b4);
+  margin: 0 auto 18px;
+  box-shadow: 0 10px 24px rgba(29, 111, 224, 0.35);
+}
+
+.device-gate h1 {
+  font-size: 22px;
+  margin: 0 0 10px;
+  color: var(--text);
+  letter-spacing: -0.01em;
+}
+
+.device-gate p {
+  color: var(--text-soft);
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0 0 18px;
+}
+
+.device-gate__chips {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0 0 18px;
+}
+
+.device-gate__chip {
+  background: var(--surface-3);
+  border: 1px solid var(--border-strong);
+  color: var(--text-soft);
+  border-radius: 999px;
+  padding: 6px 16px;
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.device-gate__hint {
+  color: var(--muted);
+  font-size: 12px;
+  margin-bottom: 0;
+}

@@ -5,6 +5,7 @@ library, and bursar) work from one relational database and a shared set of APIs 
 re-entering the same information.
 
 - **Frontend:** React 19 + Vite SPA, role-aware navigation, blue design system with a dark theme
+- **Device support:** desktop browsers only — phones, tablets (including Android) and touch-only devices, or any window narrower than 1024px, get a "Desktop only" gate instead of the app
 - **Backend:** Express 5 REST API over MySQL 8
 - **Database:** 13 tables (12 domain tables plus a sequence counter table), foreign keys throughout
 - **Zero-setup database:** an embedded MySQL server is downloaded and started automatically on first run
