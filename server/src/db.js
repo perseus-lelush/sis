@@ -32,14 +32,6 @@ export async function initDb() {
       database: embeddedServer.dbName,
     };
   } else {
-    const admin = await mysql.createConnection({
-      host: config.db.host,
-      port: config.db.port,
-      user: config.db.user,
-      password: config.db.password,
-    });
-    await admin.query(`CREATE DATABASE IF NOT EXISTS \`${config.db.name}\``);
-    await admin.end();
     connectionOptions = {
       host: config.db.host,
       port: config.db.port,
@@ -47,6 +39,17 @@ export async function initDb() {
       password: config.db.password,
       database: config.db.name,
     };
+
+    if (config.autoInit) {
+      const admin = await mysql.createConnection({
+        host: config.db.host,
+        port: config.db.port,
+        user: config.db.user,
+        password: config.db.password,
+      });
+      await admin.query(`CREATE DATABASE IF NOT EXISTS \`${config.db.name}\``);
+      await admin.end();
+    }
   }
 
   pool = mysql.createPool({
