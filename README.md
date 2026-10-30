@@ -140,7 +140,7 @@ Copy `server/.env.example` to `server/.env` and adjust as needed.
 | Variable | Default | Purpose |
 | --- | --- | --- |
 | `PORT` | `4000` | API port |
-| `JWT_SECRET` | `sis-dev-secret-change-me` | Token signing secret. Change before sharing |
+| `SIS_JWT_SECRET` | — | Token signing secret. Preferred name (Vercel reserves `JWT_`). `JWT_SECRET` also works where allowed. Change before sharing |
 | `DB_MODE` | `embedded` | `embedded` (auto MySQL) or `external` |
 | `DB_AUTO_INIT` | `true` | Apply schema and seed on every start |
 | `DB_HOST` / `DB_PORT` / `DB_USER` / `DB_PASSWORD` / `DB_NAME` | `127.0.0.1` / `3306` / `root` / *(empty)* / `sis_db` | External MySQL connection |
